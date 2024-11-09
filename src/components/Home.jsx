@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import animationData from '../JSON/Home.json';
 import Lottie from 'react-lottie'
 import { Col, Container, Row } from 'react-bootstrap';
 import PersButton from './PersButton';
+import { useTranslation } from 'react-i18next'
 
-function Home({language, setLanguage}) {
+function Home() {
+
+    const { t } = useTranslation();
 
     const defaultOptions = {
         loop: true,
@@ -16,28 +19,44 @@ function Home({language, setLanguage}) {
         }
     };
 
+    const [renderVideo, setRenderVideo] = useState(true)
+
+    useEffect(() => {
+        
+        const manejarRedimension = () => {
+            if(window.innerWidth < 992) {
+                setRenderVideo(false)
+            } else {
+                setRenderVideo(true)}
+        };
+      
+          window.addEventListener('resize', manejarRedimension);
+
+          manejarRedimension();
+    }, [])
+
     return (
-        <Container>
+        <Container className="d-flex flex-row" style={{ width: 100 + 'vw', height: 100 + 'vh' }}>
             <Row>
-                <Col>
+                {renderVideo && <Col md={12} lg={8} className="d-flex align-items-center justify-content-center">
                     <Lottie
                         options={defaultOptions}
-                        height={500}
-                        width={500}
+                        height={'auto'}
+                        width={'auto'}
                     />
-                </Col>
-                <Col className="d-flex flex-column align-items-center justify-content-center">
+                </Col>}
+                <Col md={12} lg={4} className="d-flex flex-column align-items-center justify-content-center">
                     <div class="description">
-                        <p id="pTitulo">{language === "ES" ? "Hola, mi nombre es" : "Hi, my name is"}</p>
+                        <p id="pTitulo">{t('title')}</p>
                         <h1>Matias Arriete</h1>
-                        <p id="pDesarrollador">{language === "ES" ? "Desarrollador Web" : "Web Developer"}</p>
+                        <p id="pDesarrollador">{t('web_developer')}</p>
                         <div class="cvConocerMas">
                             <PersButton
-                                text={language === "ES" ? "Sobre Mi" : "About Me"}
-                                link={"Prueba"}
+                                text={t('about_me')}
+                                link={"#About_Me_Page"}
                             />
                             <PersButton
-                                text={language === "ES" ? "Aqui te dejo mi CV" : "Here I let you my CV"}
+                                text={t('cv')}
                                 link={"https://drive.google.com/file/d/1PdtMvIVxJ_td-ALDQxiHkjq-GRAT55IU/view?usp=sharing"}
                             />
                         </div>

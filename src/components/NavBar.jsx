@@ -1,23 +1,31 @@
 import {Container, Nav, Navbar, NavDropdown} from 'react-bootstrap';
+import i18n from '../i18n';
+import {useTranslation} from 'react-i18next'
 
-function NavBarComponent({language, setLanguage}) {
+function NavBarComponent() {
+
+  const {t} = useTranslation();
+
+  const handleChange = (event) => {
+    i18n.changeLanguage(event.target.text)
+  }
 
   return (
-        <Navbar bg="light" data-bs-theme="light">
+        <Navbar bg="light" expand="lg" sticky="top" data-bs-theme="light">
           <Container>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse>
               <Nav className="me-auto">
-                  <Nav.Link href="#inicio">{language === "ES"?"Inicio":"Home"}</Nav.Link>
-                  <Nav.Link href="#sobreMi">{language === "ES"?"Sobre Mi":"About Me"}</Nav.Link>
-                  <Nav.Link href="#experiencia">{language === "ES"?"Experiencia":"Experience"}</Nav.Link>
-                  <Nav.Link href="#contactame">{language === "ES"?"Contactame":"Contact"}</Nav.Link>
+                  <Nav.Link href="#inicio">{t('home')}</Nav.Link>
+                  <Nav.Link href="#sobreMi">{t('about_me')}</Nav.Link>
+                  <Nav.Link href="#experiencia">{t('experience')}</Nav.Link>
+                  <Nav.Link href="#contactame">{t('contact_me')}</Nav.Link>
                 </Nav> 
               </Navbar.Collapse>
               <Navbar.Collapse className="justify-content-end">
-                <NavDropdown title={language}>
-                  <NavDropdown.Item onClick={() => setLanguage("ES")}>ES</NavDropdown.Item>
-                  <NavDropdown.Item onClick={() => setLanguage("EN")}>EN</NavDropdown.Item>
+                <NavDropdown title={i18n.language}>
+                  <NavDropdown.Item onClick={handleChange}>ES</NavDropdown.Item>
+                  <NavDropdown.Item onClick={handleChange}>EN</NavDropdown.Item>
                 </NavDropdown>
               </Navbar.Collapse> 
             </Container>
